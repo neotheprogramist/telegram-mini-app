@@ -8,7 +8,7 @@
 </script>
 
 <div class="navbar">
-	<div class="title">Telegram Mini App 1</div>
+	<div class="title">Telegram Mini App</div>
 	<div class="nav-links">
 		<a href="/" class:active={currentPath === '/'}>Home</a>
 		<a href="/counter" class:active={currentPath === '/counter'}>Counter</a>
