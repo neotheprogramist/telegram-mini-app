@@ -1,11 +1,14 @@
 <script>
+	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
+
+	let currentPath = '';
 
 	$: currentPath = $page.url.pathname;
 </script>
 
 <div class="navbar">
-	<div class="title">Telegram Mini App</div>
+	<div class="title">Telegram Mini App 1</div>
 	<div class="nav-links">
 		<a href="/" class:active={currentPath === '/'}>Home</a>
 		<a href="/counter" class:active={currentPath === '/counter'}>Counter</a>
@@ -57,7 +60,7 @@
 		text-decoration: underline;
 	}
 
-	@media (min-width: 390px) {
+	@media (min-width: 391px) {
 		.navbar {
 			flex-wrap: nowrap; /* Disable wrapping for larger screens */
 		}
