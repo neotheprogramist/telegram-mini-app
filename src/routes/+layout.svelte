@@ -3,6 +3,7 @@
 	import { onMount } from 'svelte';
 	import Navbar from '$lib/Navbar.svelte';
 	import '../styles/global.css';
+	import { userStore } from '../stores/user';
 
 	let user:
 		| (WebAppUser & { added_to_attachment_menu?: boolean; allows_write_to_pm?: boolean })
@@ -19,12 +20,37 @@
 		if (typeof window !== 'undefined') {
 			const WebApp = await import('@twa-dev/sdk');
 			user = WebApp.default.initDataUnsafe.user;
-			console.log('user data1:', WebApp.default.initDataUnsafe.user);
+
 			if (user) {
-				await addUserToDatabase(user);
+				const userExists = await checkUserExists(String(user.id));
+				console.log(userExists);
+				if (!userExists) {
+					await addUserToDatabase(user);
+				} else {
+					console.log('User already exists in the database');
+				}
+				userStore.set(user);
 			}
 		}
 	});
+
+	// Check if the user exists in the database based on the telegram_id
+	async function checkUserExists(telegramId: string): Promise<boolean> {
+		try {
+			const response = await fetch(`/api/users/${telegramId}`);
+			if (response.status === 200) {
+				return true; // User exists
+			} else if (response.status === 404) {
+				return false; // User not found
+			} else {
+				console.error('Failed to check user existence:', response.statusText);
+				return false;
+			}
+		} catch (error) {
+			console.error('Error checking user existence:', error);
+			return false;
+		}
+	}
 
 	async function addUserToDatabase(user: WebAppUser) {
 		try {
@@ -33,7 +59,10 @@
 				headers: {
 					'Content-Type': 'application/json'
 				},
-				body: JSON.stringify(user)
+				body: JSON.stringify({
+					...user,
+					telegram_id: String(user.id)
+				})
 			});
 
 			if (!response.ok) {
