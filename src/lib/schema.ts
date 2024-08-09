@@ -7,3 +7,4 @@ export const usersTable = sqliteTable("users", {
     score: int("score"),
 });
 
+

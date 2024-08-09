@@ -9,12 +9,6 @@
 		| (WebAppUser & { added_to_attachment_menu?: boolean; allows_write_to_pm?: boolean })
 		| undefined;
 
-	let user1 = {
-		first_name: 'gawc1uuu',
-		last_name: '',
-		id: 31231
-	};
-
 	// making sure code only runs on client side
 	onMount(async () => {
 		if (typeof window !== 'undefined') {
