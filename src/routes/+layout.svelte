@@ -8,14 +8,41 @@
 		| (WebAppUser & { added_to_attachment_menu?: boolean; allows_write_to_pm?: boolean })
 		| undefined;
 
+	let user1 = {
+		first_name: 'gawc1uuu',
+		last_name: '',
+		id: 31231
+	};
+
 	// making sure code only runs on client side
 	onMount(async () => {
 		if (typeof window !== 'undefined') {
 			const WebApp = await import('@twa-dev/sdk');
 			user = WebApp.default.initDataUnsafe.user;
 			console.log('user data1:', WebApp.default.initDataUnsafe.user);
+			if (user) {
+				await addUserToDatabase(user);
+			}
 		}
 	});
+
+	async function addUserToDatabase(user: WebAppUser) {
+		try {
+			const response = await fetch('/api/users', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(user)
+			});
+
+			if (!response.ok) {
+				console.error('Failed to add user to database:', response.statusText);
+			}
+		} catch (error) {
+			console.error('Error adding user to database:', error);
+		}
+	}
 </script>
 
 <header>
