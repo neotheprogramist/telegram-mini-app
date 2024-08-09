@@ -15,6 +15,7 @@
 		"@sveltejs/adapter-auto": "^3.0.0",
 		"@sveltejs/kit": "^2.0.0",
 		"@sveltejs/vite-plugin-svelte": "^3.0.0",
+		"drizzle-kit": "^0.24.0",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.1.2",
 		"svelte": "^4.2.7",
@@ -24,6 +25,9 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@twa-dev/sdk": "^7.8.0"
+		"@libsql/client": "^0.8.1",
+		"@twa-dev/sdk": "^7.8.0",
+		"dotenv": "^16.4.5",
+		"drizzle-orm": "^0.33.0"
 	}
 }
