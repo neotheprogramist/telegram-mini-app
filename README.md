@@ -1,38 +1,76 @@
-# create-svelte
+First we need to set up turso db. On windows you need wsl.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/main/packages/create-svelte).
+first install turso.
 
-## Creating a project
+```wsl
+curl -sSfL https://get.tur.so/install.sh | bash
 
-If you're seeing this, you've probably already done this step. Congrats!
+```linux
+curl -sSfL https://get.tur.so/install.sh | bash
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+```mac
+brew install tursodatabase/tap/turso
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
 
-## Developing
+then authenticate with turso.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+```wsl
+turso auth signup --headless
 
-```bash
+turso auth login --headless
+
+or with mac and linux
+
+turso auth signup
+
+turso auth login if you get an error try 
+
+turso auth login --headless
+
+here is link to turso docs if needed:
+https://docs.turso.tech/cli/introduction
+
+if you authenticated you can now run the following command to create a database.
+
+
+turso db create <db-name>
+
+
+then run 
+turso db show <db-name>
+
+its going to give you a url that you can use to connect to the database.
+
+create .env file in the root of the project and add the following line.
+DB_URL=<url-from-turso-db-show>
+
+then run the following command to create db token.
+turso db tokens create <db-name>
+
+then add the token to the .env file.
+DB_TOKEN=<token>
+
+then run npm install to install all the dependencies.
+
+then you can delete migrations folder and run the following command to create a new migration.
+
+npx drizzle-kit generate
+
+then run the following command to run the migration.
+
+npx drizzle-kit push
+
+to check if table was created correctly run the following command.
+
+npx drizzle-kit studio
+
+it gives you a link to the studio where you can see the tables.
+
+then you can run the following command to start the server.
+
+to run it locally run the following command.
+
 npm run dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```bash
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+the best way to test it is to use ngrok to expose the server to the internet
+and create new bot on telegram and provide it with a url from ngrok.
